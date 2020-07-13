@@ -12,8 +12,8 @@ shinyUI(fluidPage(
   ),
   mainPanel(
     tabsetPanel(type = "tabs",
-                        tabPanel("Grafic", plotOutput("Plot")),
-                        tabPanel("Dades", dataTableOutput("Table"))
+                        tabPanel("Grafico", plotOutput("Plot")),
+                        tabPanel("Datos", dataTableOutput("Table"))
       )
     )
   )
