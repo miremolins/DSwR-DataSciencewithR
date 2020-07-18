@@ -52,4 +52,4 @@ shinyServer(function(input, output) {
  output$TableP<-renderDataTable(datasetP())
  output$TableC<-renderDataTable(datasetc())
   })
-?plot.density
+

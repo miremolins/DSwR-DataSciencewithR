@@ -1,4 +1,4 @@
-#libraries in use
+##libraries in use
 library(shiny)
 #SELECTOR DE OPCIONES
 shinyUI(fluidPage(
