@@ -78,20 +78,22 @@ gapdata <- left_join(gapdata, countrydata, by=c("country"))
 #code
 shinyServer(function(input, output) {
 #input
-dataset<-reactive ({filter(gapdata, gapdata[,2] == input$Years) })
-DrawChart <- reactive({
+dataset<-reactive({filter(gapdata, gapdata[,2] == input$Years)})
+
+DrawPlotly<-reactive({
   chart <- ggplot(dataset(),aes_string(x = input$X, 
                                        y = input$Y, size=input$size, 
                                        color = input$color)) + 
     geom_point(alpha=input$transparency) + 
-    scale_size(range=c(1,24))
-  print(chart)
+    scale_size(range=c(1,24)) + 
+    theme_classic()+
+    theme(legend.position = "right", legend.title = element_blank())
+  graph<-ggplotly(chart)
 })
+
 #output
  output$Table<-renderDataTable(dataset())
- output$Plot <- renderPlot({
-   DrawChart()
- })
+ output$plotly <- renderPlotly({DrawPlotly()})
   })
 
 

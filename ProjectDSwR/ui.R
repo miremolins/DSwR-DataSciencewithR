@@ -12,17 +12,13 @@ shinyUI(fluidPage(
     selectInput('size', 'Size',c("ChildMortality","ChildrenPerWoman","CO2Emissions","IncomePerPerson","LifeExpectancy","Population"),selected = "Population"),
     selectInput("color","Color",c("Region","Sub.Region")),
     sliderInput("transparency","Transparency",value = 0.5, min = 0, max= 1),
-    radioButtons(inputId = "geom",label = "Chart type",
-                 choices = c("ScatterPlot"= "points",
-                             "Boxplot"= "boxplot"),
-                 selected= "points")
   ),
   
 #Elementos de Salida
     mainPanel(
       tabsetPanel(type = "tabs",
-                        tabPanel("Grafico", plotOutput("Plot")),
-                        tabPanel("Table", dataTableOutput("Table"))
+                        tabPanel("Table", dataTableOutput("Table")),
+                        tabPanel("Interactive Graph", plotlyOutput("plotly", width = "900px",height="550px"))
                 
       )
     )
