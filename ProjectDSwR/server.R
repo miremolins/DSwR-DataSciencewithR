@@ -1,7 +1,20 @@
 #libraries in use
-library(readr)
-library(reshape2)
-library(dplyr)
+if(!require("readr")) {
+  install.packages("readr")
+  library("readr")
+}
+if(!require("reshape2")) {
+  install.packages("reshape2")
+  library("reshape2")
+}
+if(!require("dplyr")) {
+  install.packages("dplyr")
+  library("dplyr")
+}
+if(!require("plotly")) {
+  install.packages("plotly")
+  library("plotly")
+}
 #Dataset Creation
 childmortality1<- read.csv("Datos/child_mortality_0_5_year_olds_dying_per_1000_born.csv",check.names = FALSE)
 childrenperwoman1<- read.csv("Datos/children_per_woman_total_fertility.csv",check.names = FALSE)
