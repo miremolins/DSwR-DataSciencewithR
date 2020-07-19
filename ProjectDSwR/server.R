@@ -15,14 +15,26 @@ if(!require("plotly")) {
   install.packages("plotly")
   library("plotly")
 }
+if(!require("ggiraph")) {
+  install.packages("ggiraph")
+  library("ggiraph")
+}
 #Dataset Creation
 childmortality1<- read.csv("Datos/child_mortality_0_5_year_olds_dying_per_1000_born.csv",check.names = FALSE)
 childrenperwoman1<- read.csv("Datos/children_per_woman_total_fertility.csv",check.names = FALSE)
 co2emissions1<-read.csv("Datos/co2_emissions_tonnes_per_person.csv",check.names = FALSE)
 incomeperperson1<-read.csv("Datos/income_per_person_gdppercapita_ppp_inflation_adjusted.csv",check.names = FALSE)
 lifeexpectancy1<- read.csv("Datos/life_expectancy_years.csv",check.names = FALSE)
-population1<- read_csv("Datos/population_total.csv")
-democracyindex1<-read_csv("Datos/democracy_score_use_as_color.csv")
+population1<- read.csv("Datos/population_total.csv",check.names = FALSE)
+democracyindex1<-read.csv("Datos/democracy_score_use_as_color.csv",check.names = FALSE)
+#coordenadasdata
+coord1<-read_delim("geolocation.csv", 
+                   "\t", escape_double = FALSE, 
+                   trim_ws = TRUE)
+coord1<-coord1[,-1]
+colnames(coord1)[3] <- c("country")
+coord1$latitude<-as.numeric(as.character(coord1$latitude))
+coord1$longitude<-as.numeric(as.character(coord1$longitude))
 
 childmortality1<-melt(childmortality1,id.vars="country", variable.name = "Years", value.name="ChildMortality", na.rm = TRUE)
 childrenperwoman1<-melt(childrenperwoman1,id.vars="country", variable.name = "Years", value.name="ChildrenPerWoman", na.rm = TRUE)
@@ -79,6 +91,7 @@ gapdata <- left_join(gapdata, incomeperperson1, by=c("country","Years"))
 gapdata <- left_join(gapdata, lifeexpectancy1, by=c("country","Years"))
 gapdata<- left_join(gapdata,democracyindex1, by=c("country","Years"))
 gapdata <- left_join(gapdata, countrydata, by=c("country"))
+gapdata<-left_join(gapdata,coord1,by="country")
 #code
 shinyServer(function(input, output) {
 #informacion
@@ -103,9 +116,25 @@ DrawPlotly<-reactive({
   graph<-ggplotly(chart, tooltip = c("w","colour","size","x","y"))
 })
 
+DrawMap<-reactive({
+    world <- map_data("world")
+    worldmap <- ggplot()+
+    geom_path(aes(x = long, y = lat, group = group), data = world)+
+    geom_point(data = dataset(),inherit.aes=FALSE,aes_string(x="longitude", 
+                                                             y="latitude", 
+                                                             size = input$size, 
+                                                             color = input$color,
+                                                             w = "country"), 
+               alpha = input$transparency)
+    theme_classic()+
+    scale_size(range=c(1,10))+
+    theme(legend.position = "right", legend.title = element_blank())
+    mapa<-ggplotly(worldmap, tooltip = c("w","colour","size","x","y"))
+})
 #output
  output$Table<-renderDataTable(dataset())
  output$plotly <- renderPlotly({DrawPlotly()})
+ output$mapa<-renderPlotly({DrawMap()})
   })
 
 

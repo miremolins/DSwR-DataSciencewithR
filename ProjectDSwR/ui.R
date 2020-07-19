@@ -9,7 +9,7 @@ shinyUI(fluidPage(
                      actionButton("Calcular","Welcome To GapminderApp", icon("line-chart"),
                      style="color:#fff000; background-color: #337ab7;
                      border-color: #2e6da4")),
-    conditionalPanel(condition = "input.tabselected<3",
+    conditionalPanel(condition = "input.tabselected<4",
     sliderInput("Years","Select year:",value = 1800,min = 1800, max= 2019, step=1, round=0),
     selectInput("X","X",c("ChildMortality","ChildrenPerWoman","CO2Emissions","IncomePerPerson","LifeExpectancy","Population","DemocracyIndex")),
     selectInput("Y","Y",c("ChildMortality","ChildrenPerWoman","CO2Emissions","IncomePerPerson","LifeExpectancy","Population"), selected = "ChildrenPerWoman"),
@@ -26,6 +26,7 @@ shinyUI(fluidPage(
                         tabPanel("Informacion", value = 4, htmlOutput("htm")),
                         tabPanel("Table", value = 1, dataTableOutput("Table")),
                         tabPanel("Interactive Graph", value = 2, plotlyOutput("plotly", width = "900px",height="550px")),
+                        tabPanel("WorldMap",value=3, plotlyOutput("mapa", width = "900px",height="500px")),
                         id="tabselected"
                 
       )
