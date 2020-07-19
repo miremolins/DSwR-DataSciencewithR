@@ -81,6 +81,10 @@ gapdata<- left_join(gapdata,democracyindex1, by=c("country","Years"))
 gapdata <- left_join(gapdata, countrydata, by=c("country"))
 #code
 shinyServer(function(input, output) {
+#informacion
+output$htm <- renderText(
+    paste(readLines("Gapminder.htm"), collapse="")
+    )
 #input
 dataset<-reactive({filter(gapdata, gapdata[,2] == input$Years)})
 
