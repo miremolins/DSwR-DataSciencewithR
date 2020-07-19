@@ -80,16 +80,20 @@ shinyServer(function(input, output) {
 #input
 dataset<-reactive ({filter(gapdata, gapdata[,2] == input$Years) })
 DrawChart <- reactive({
-  chart <- ggplot(dataset()) +
-    aes_string(x = input$X, y = input$Y, size=input$size, color = input$color) + 
+  chart <- ggplot(dataset(),aes_string(x = input$X, 
+                                       y = input$Y, size=input$size, 
+                                       color = input$color)) + 
     geom_point(alpha=input$transparency) + 
     scale_size(range=c(1,24))
   print(chart)
+  chart<-ggplotly(dataset)
 })
 #output
  output$Table<-renderDataTable(dataset())
- output$Plot <- renderPlot({
+ output$Plot <- renderPlotly({
    DrawChart()
  })
   })
+
+
 
