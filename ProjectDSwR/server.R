@@ -87,7 +87,7 @@ dataset<-reactive({filter(gapdata, gapdata[,2] == input$Years)})
 DrawPlotly<-reactive({
   chart <- ggplot(dataset(),aes_string(x = input$X, 
                                        y = input$Y, size=input$size, 
-                                       color = input$color, na.rm=TRUE)) + 
+                                       color = input$color)) + 
     geom_point(alpha=input$transparency) + 
     scale_size(range=c(1,24)) + 
     theme_classic()+
