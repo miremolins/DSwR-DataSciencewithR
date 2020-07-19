@@ -87,7 +87,7 @@ dataset<-reactive({filter(gapdata, gapdata[,2] == input$Years)})
 DrawPlotly<-reactive({
   chart <- ggplot(dataset(),aes_string(x = input$X, 
                                        y = input$Y, size=input$size, 
-                                       color = input$color)) + 
+                                       color = input$color, w = "country")) + 
     geom_point(alpha=input$transparency) + 
     scale_size(range=c(1,24)) + 
     theme_classic()+
@@ -96,7 +96,7 @@ DrawPlotly<-reactive({
   if(input$facet != "None")
     chart <- chart + facet_wrap(c(input$facet))
   
-  graph<-ggplotly(chart)
+  graph<-ggplotly(chart, tooltip = c("w","colour","size","x","y"))
 })
 
 #output
