@@ -11,6 +11,7 @@ shinyUI(fluidPage(
     selectInput("Y","Eje Y",c("ChildMortality","ChildrenPerWoman","CO2Emissions","IncomePerPerson","LifeExpectancy","Population"), selected = "ChildrenPerWoman"),
     selectInput('size', 'Size',c("ChildMortality","ChildrenPerWoman","CO2Emissions","IncomePerPerson","LifeExpectancy","Population"),selected = "Population"),
     selectInput("color","Color",c("Region","Sub.Region")),
+    selectInput('facet', 'Facets',c("None","Region","Sub.Region")),
     sliderInput("transparency","Transparency",value = 0.5, min = 0, max= 1),
   ),
   

@@ -88,6 +88,10 @@ DrawPlotly<-reactive({
     scale_size(range=c(1,24)) + 
     theme_classic()+
     theme(legend.position = "right", legend.title = element_blank())
+  
+  if(input$facet != "None")
+    chart <- chart + facet_wrap(c(input$facet))
+  
   graph<-ggplotly(chart)
 })
 
