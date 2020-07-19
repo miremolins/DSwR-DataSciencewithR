@@ -2,7 +2,7 @@
 library(shiny)
 #Interfaz
 shinyUI(fluidPage(
-  titlePanel("Data to change your mind"),
+  titlePanel("Data to change your mind and please your eyes"),
 #Opciones de Entrada
   sidebarLayout(
     sidebarPanel(
