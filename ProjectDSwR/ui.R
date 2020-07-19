@@ -6,9 +6,9 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
     actionButton("start","Calculate"),
-    sliderInput("Year","Select year:",value = 1800,min = 1800, max= 2019, step=1, round=0),
-    selectInput("X","Eje X",c("Childmortality","childrenperwoman","co2emission","incomeperperson","lifeexpectancy","population")),
-    selectInput("Y","Eje Y",c("Childmortality","childrenperwoman","co2emission","incomeperperson","lifeexpectancy","population")),
+    sliderInput("Years","Select year:",value = 1800,min = 1800, max= 2019, step=1, round=0),
+    selectInput("X","Eje X",c("Child Mortality","Children Per Woman","CO2 Emissions","Income Per Person","Life Expectancy","Population")),
+    selectInput("Y","Eje Y",c("Child Mortality","Children Per Woman","CO2 Emissions","Income Per Person","Life Expectancy","Population")),
     radioButtons(inputId = "geom",label = "Chart type",
                  choices = c("X Y"= "points",
                              "Boxplot"= "boxplot"),
@@ -19,10 +19,7 @@ shinyUI(fluidPage(
   mainPanel(
     tabsetPanel(type = "tabs",
                         tabPanel("Grafico", plotOutput("Plot")),
-                        tabPanel("DatosX", dataTableOutput("TableX")),
-                        tabPanel("DatosY",dataTableOutput("Table")),
-                tabPanel("Poblacion",dataTableOutput("TableP")),
-                tabPanel("combo",dataTableOutput("TableC"))
+                        tabPanel("Table", dataTableOutput("Table"))
                 
       )
     )
