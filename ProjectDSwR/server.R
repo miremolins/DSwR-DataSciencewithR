@@ -22,6 +22,7 @@ co2emissions1<-read.csv("Datos/co2_emissions_tonnes_per_person.csv",check.names 
 incomeperperson1<-read.csv("Datos/income_per_person_gdppercapita_ppp_inflation_adjusted.csv",check.names = FALSE)
 lifeexpectancy1<- read.csv("Datos/life_expectancy_years.csv",check.names = FALSE)
 population1<- read_csv("Datos/population_total.csv")
+democracyindex1<-read_csv("Datos/democracy_score_use_as_color.csv")
 
 childmortality1<-melt(childmortality1,id.vars="country", variable.name = "Years", value.name="ChildMortality", na.rm = TRUE)
 childrenperwoman1<-melt(childrenperwoman1,id.vars="country", variable.name = "Years", value.name="ChildrenPerWoman", na.rm = TRUE)
@@ -29,6 +30,7 @@ co2emissions1<-melt(co2emissions1,id.vars="country", variable.name = "Years", va
 incomeperperson1<-melt(incomeperperson1,id.vars="country", variable.name = "Years", value.name="IncomePerPerson", na.rm = TRUE)
 lifeexpectancy1<-melt(lifeexpectancy1,id.vars="country", variable.name = "Years", value.name="LifeExpectancy", na.rm = TRUE)
 population1<-melt(population1,id.vars="country", variable.name = "Years", value.name="Population", na.rm = TRUE)
+democracyindex1<-melt(democracyindex1,id.vars="country", variable.name = "Years", value.name="DemocracyIndex", na.rm = TRUE)
 
 childmortality1$Years<- as.numeric(as.character(childmortality1$Years))
 childrenperwoman1$Years<- as.numeric(as.character(childrenperwoman1$Years))
@@ -36,6 +38,7 @@ co2emissions1$Years<- as.numeric(as.character(co2emissions1$Years))
 incomeperperson1$Years<- as.numeric(as.character(incomeperperson1$Years))
 lifeexpectancy1$Years<- as.numeric(as.character(lifeexpectancy1$Years))
 population1$Years<- as.numeric(as.character(population1$Years))
+democracyindex1$Years<-as.numeric((as.character(democracyindex1$Years)))
 countrydata<-read.csv("https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv",stringsAsFactors = FALSE, check.names = FALSE)
 colnames(countrydata)[1] <- c("country")
 colnames(countrydata)[6] <- c("Region")
@@ -74,6 +77,7 @@ gapdata <- left_join(gapdata, childrenperwoman1, by=c("country","Years"))
 gapdata <- left_join(gapdata, co2emissions1, by=c("country","Years"))
 gapdata <- left_join(gapdata, incomeperperson1, by=c("country","Years"))
 gapdata <- left_join(gapdata, lifeexpectancy1, by=c("country","Years"))
+gapdata<- left_join(gapdata,democracyindex1, by=c("country","Years"))
 gapdata <- left_join(gapdata, countrydata, by=c("country"))
 #code
 shinyServer(function(input, output) {
@@ -83,7 +87,7 @@ dataset<-reactive({filter(gapdata, gapdata[,2] == input$Years)})
 DrawPlotly<-reactive({
   chart <- ggplot(dataset(),aes_string(x = input$X, 
                                        y = input$Y, size=input$size, 
-                                       color = input$color)) + 
+                                       color = input$color, na.rm=TRUE)) + 
     geom_point(alpha=input$transparency) + 
     scale_size(range=c(1,24)) + 
     theme_classic()+
