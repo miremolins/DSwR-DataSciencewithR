@@ -10,11 +10,11 @@ incomeperperson1<-read.csv("Datos/income_per_person_gdppercapita_ppp_inflation_a
 lifeexpectancy1<- read.csv("Datos/life_expectancy_years.csv",check.names = FALSE)
 population1<- read_csv("Datos/population_total.csv")
 
-childmortality1<-melt(childmortality1,id.vars="country", variable.name = "Years", value.name="Child Mortality", na.rm = TRUE)
-childrenperwoman1<-melt(childrenperwoman1,id.vars="country", variable.name = "Years", value.name="Children Per Woman", na.rm = TRUE)
-co2emissions1<-melt(co2emissions1,id.vars="country", variable.name = "Years", value.name="CO2 Emissions", na.rm = TRUE)
-incomeperperson1<-melt(incomeperperson1,id.vars="country", variable.name = "Years", value.name="Income Per Person", na.rm = TRUE)
-lifeexpectancy1<-melt(lifeexpectancy1,id.vars="country", variable.name = "Years", value.name="Life Expectancy", na.rm = TRUE)
+childmortality1<-melt(childmortality1,id.vars="country", variable.name = "Years", value.name="ChildMortality", na.rm = TRUE)
+childrenperwoman1<-melt(childrenperwoman1,id.vars="country", variable.name = "Years", value.name="ChildrenPerWoman", na.rm = TRUE)
+co2emissions1<-melt(co2emissions1,id.vars="country", variable.name = "Years", value.name="CO2Emissions", na.rm = TRUE)
+incomeperperson1<-melt(incomeperperson1,id.vars="country", variable.name = "Years", value.name="IncomePerPerson", na.rm = TRUE)
+lifeexpectancy1<-melt(lifeexpectancy1,id.vars="country", variable.name = "Years", value.name="LifeExpectancy", na.rm = TRUE)
 population1<-melt(population1,id.vars="country", variable.name = "Years", value.name="Population", na.rm = TRUE)
 
 childmortality1$Years<- as.numeric(as.character(childmortality1$Years))
@@ -32,10 +32,30 @@ gapdata <- left_join(gapdata, population1, by=c("country","Years"))
 
 #code
 shinyServer(function(input, output) {
+#input
   
 dataset<-reactive ({filter(gapdata, gapdata[,2] == input$Years) })
 
+DrawChart <- reactive({
+  
+  chart <- ggplot(dataset()) 
+  
+  if(input$geom == "points") {
+    chart <- chart + geom_point(aes_string(x = input$X, y = input$Y))
+  } else if(input$geom == "boxplot") {
+    chart <- chart + geom_boxplot(aes(input$Y))
+  } 
+  
+  print(chart)
+  
+})
+
+#output
+
  output$Table<-renderDataTable(dataset())
+ output$Plot <- renderPlot({
+   DrawChart()
+ }, width = 1200, height = 720)
 
   })
 
