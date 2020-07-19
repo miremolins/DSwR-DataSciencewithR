@@ -125,9 +125,9 @@ DrawMap<-reactive({
                                                              size = input$size, 
                                                              color = input$color,
                                                              w = "country"), 
-               alpha = input$transparency)
+               alpha = input$transparency)+
     theme_classic()+
-    scale_size(range=c(1,10))+
+    scale_size(range=c(1,20))+
     theme(legend.position = "right", legend.title = element_blank())
     mapa<-ggplotly(worldmap, tooltip = c("w","colour","size","x","y"))
 })
