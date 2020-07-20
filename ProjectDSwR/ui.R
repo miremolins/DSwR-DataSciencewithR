@@ -1,3 +1,12 @@
+##=========================================================================##
+##                                                                         ##
+##  DATA SCIENCE AMB R                                                     ##
+##  Gapminder                                                              ##
+##  @authors: Marc Macori, Julia Martinez, Mireia Molins                   ##
+##                                                                         ##
+##  Required datasets: quan ho tinguem sha d posar.zip                                                ##
+##                                                                         ##
+##=========================================================================##
 ##libraries in use
 library(shiny)
 #Interfaz
